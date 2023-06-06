@@ -1,8 +1,9 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, \
+    RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 from Users.models import User
-from Users.serializers import UserSerializer
+from Users.serializers import UserSerializer, GoalsSerializer
 
 
 class CreateUserView(CreateAPIView):
@@ -59,10 +60,23 @@ class UpdateSelfUserView(UpdateAPIView):
 
 
 class DeleteUserView(DestroyAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
 
 
+class GetAllUsersListView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+
+class GetUpdateUserGoals(RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = GoalsSerializer
+    lookup_field = 'id'
+
+    def get_object(self):
+        return self.request.user

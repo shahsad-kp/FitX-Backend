@@ -42,9 +42,8 @@ class UserSerializer(ModelSerializer):
         )
         return user
 
+
 class GoalsSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'weekly_calorie_goal', 'weekly_category_goal', 'weekly_category_goal']
-
-
