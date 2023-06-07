@@ -7,3 +7,4 @@ tzdata==2023.3
 wheel==0.38.4
 Pillow
 djangorestframework
+drf-yasg

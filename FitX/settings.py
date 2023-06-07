@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'Banner',
     'Category',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
