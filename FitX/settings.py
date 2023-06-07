@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'Users',
     'Exercises',
     'Banner',
+    'Category',
     'rest_framework',
 ]
 
