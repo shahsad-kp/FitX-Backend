@@ -40,7 +40,7 @@ class Height(models.Model):
 class CompletedCategory(models.Model):
     date = models.DateField()
     category_id = models.ForeignKey(
-        to='Exercises.Category',
+        to='Category.Category',
         on_delete=models.CASCADE,
     )
     user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='completed_categories')
