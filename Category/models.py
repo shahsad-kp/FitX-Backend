@@ -6,4 +6,3 @@ class Category(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='category_images/')
     music = models.FileField(upload_to='category_audios/')
-

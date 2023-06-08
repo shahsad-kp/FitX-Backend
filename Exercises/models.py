@@ -7,6 +7,6 @@ class Exercise(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField()
     demo = models.FileField(upload_to='exercise_demos/')
-    count = models.PositiveIntegerField(blank=True)
-    duration = models.DurationField(blank=True)
+    count = models.PositiveIntegerField(null=True)
+    duration = models.DurationField(null=True)
     category = models.ManyToManyField(to=Category, related_name='exercises')

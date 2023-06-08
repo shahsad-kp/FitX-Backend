@@ -1,8 +1,13 @@
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from Category.models import Category
 from Category.serializers import CategorySerializer
+from Exercises.models import Exercise
 
 
 class GetAllCategoriesView(ListAPIView):
@@ -29,3 +34,34 @@ class UpdateCategoryView(UpdateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
     lookup_field = 'id'
+
+
+class AddExerciseIntoCategory(APIView):
+    permission_classes = [AllowAny]
+
+    def patch(self, request: Request, *args, **kwargs):
+        category_id = kwargs.get('category_id', 0)
+        exercise_id = kwargs.get('exercise_id', 0)
+
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response(
+                {'detail': 'Category not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            exercise = Exercise.objects.get(id=exercise_id)
+        except Exercise.DoesNotExist:
+            return Response(
+                {'detail': 'Exercise not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        if category.exercises.filter(id=exercise.id).exists():
+            return Response(
+                {'detail': 'Exercise is already added'},
+                status=status.HTTP_409_CONFLICT
+            )
+
+        category.exercises.add(exercise)
+        return Response({'detail': 'Exercise added to the category.'})
