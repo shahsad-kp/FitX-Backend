@@ -1,11 +1,8 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListAPIView, \
-    get_object_or_404
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from Category.models import Category
 from Exercises.models import Exercise
 from Exercises.serializers import ExerciseSerializer
 
