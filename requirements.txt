@@ -8,3 +8,4 @@ wheel==0.38.4
 Pillow
 djangorestframework
 drf-yasg
+djangorestframework-simplejwt
