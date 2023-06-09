@@ -9,4 +9,7 @@ class Exercise(models.Model):
     demo = models.FileField(upload_to='exercise_demos/')
     count = models.PositiveIntegerField(null=True)
     duration = models.DurationField(null=True)
+    video_link = models.CharField(max_length=250, blank=True)
+    burn_calorie = models.IntegerField()
+    focused_area = models.CharField(null=True, max_length=250)
     category = models.ManyToManyField(to=Category, related_name='exercises')
