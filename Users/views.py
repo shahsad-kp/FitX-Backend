@@ -129,7 +129,7 @@ class DislikeACategory(APIView):
         request.user.liked_categories.remove(category)
         return Response(
             {
-                'detail': 'Category liked'
+                'detail': 'Category dislike'
             },
             status=status.HTTP_202_ACCEPTED
         )
