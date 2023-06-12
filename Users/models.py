@@ -15,6 +15,7 @@ class User(AbstractUser):
     weekly_calorie_goal = models.IntegerField(null=True)
     weekly_category_goal = models.IntegerField(null=True)
     weekly_exercise_goal = models.IntegerField(null=True)
+    liked_categories = models.ManyToManyField(to='Category.Category', related_name='liked_by')
     first_name = None
     last_name = None
 

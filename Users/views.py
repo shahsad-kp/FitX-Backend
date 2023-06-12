@@ -1,7 +1,13 @@
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, \
     RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from Category.models import Category
+from Category.serializers import CategorySerializer
 from Users.models import User
 from Users.serializers import UserSerializer, GoalsSerializer
 
@@ -80,3 +86,61 @@ class GetUpdateUserGoals(RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class LikeACategory(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request: Request, *args, **kwargs):
+        category_id = kwargs.get('category_id')
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response(
+                data={
+                    'detail': 'Category not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        print(category)
+        request.user.liked_categories.add(category)
+        return Response(
+            {
+                'detail': 'Category liked'
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
+
+
+class DislikeACategory(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request: Request, *args, **kwargs):
+        category_id = kwargs.get('category_id')
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response(
+                data={
+                    'detail': 'Category not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        request.user.liked_categories.remove(category)
+        return Response(
+            {
+                'detail': 'Category dislike'
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
+
+
+class GetAllLikedCategory(ListAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Category.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = Category.objects.filter(liked_by=self.request.user)
+        return queryset
