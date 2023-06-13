@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
@@ -52,3 +52,9 @@ class DeleteExercise(DestroyAPIView):
     permission_classes = [IsAdminUser]
     serializer_class = ExerciseSerializer
     lookup_field = 'id'
+
+
+class GetListAllExercise(ListAPIView):
+    queryset = Exercise.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = ExerciseSerializer
