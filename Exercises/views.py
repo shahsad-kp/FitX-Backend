@@ -1,8 +1,9 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListAPIView
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
+from Category.models import Category
 from Exercises.models import Exercise
 from Exercises.serializers import ExerciseSerializer
 
@@ -58,3 +59,18 @@ class GetListAllExercise(ListAPIView):
     queryset = Exercise.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = ExerciseSerializer
+
+
+class GetCategoryExercise(ListAPIView):
+    queryset = Exercise.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = ExerciseSerializer
+
+    def get_queryset(self):
+        category_id = self.kwargs['id']
+        category = Category.objects.filter(id=category_id).first()
+        if category:
+            queryset = self.queryset.filter(category=category)
+        else:
+            queryset = self.queryset.none()
+        return queryset
