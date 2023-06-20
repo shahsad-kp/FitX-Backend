@@ -11,6 +11,7 @@ class UserSerializer(ModelSerializer):
         fields = [
             'id',
             'name',
+            'profile_picture',
             'username',
             'date_of_birth',
             'email',
