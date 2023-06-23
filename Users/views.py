@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from Category.models import Category
 from Category.serializers import CategorySerializer
@@ -15,6 +16,21 @@ from Users.serializers import UserSerializer, GoalsSerializer
 class CreateUserView(CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 201:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid()
+            user = User.objects.get(username=serializer.data['username'])
+            refresh = RefreshToken.for_user(user)
+            data = {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': UserSerializer(user).data
+            }
+            response.data = data
+        return response
 
 
 class GetUserView(RetrieveAPIView):
