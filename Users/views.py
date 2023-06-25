@@ -1,6 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, \
-    RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -10,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from Category.models import Category
 from Category.serializers import CategorySerializer
 from Users.models import User
-from Users.serializers import UserSerializer, GoalsSerializer
+from Users.serializers import UserSerializer
 
 
 class CreateUserView(CreateAPIView):
@@ -94,16 +93,6 @@ class GetAllUsersListView(ListAPIView):
     serializer_class = UserSerializer
 
 
-class GetUpdateUserGoals(RetrieveUpdateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = User.objects.all()
-    serializer_class = GoalsSerializer
-    lookup_field = 'id'
-
-    def get_object(self):
-        return self.request.user
-
-
 class LikeACategory(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -118,7 +107,6 @@ class LikeACategory(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
-        print(category)
         request.user.liked_categories.add(category)
         return Response(
             {

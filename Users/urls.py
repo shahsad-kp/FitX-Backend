@@ -1,7 +1,7 @@
 from django.urls import path
 
 from Users.views import CreateUserView, GetUserView, GetSelfUserView, DeleteUserView, UpdateUserView, \
-    UpdateSelfUserView, GetAllUsersListView, GetUpdateUserGoals, LikeACategory, DislikeACategory, GetAllLikedCategory
+    UpdateSelfUserView, GetAllUsersListView, LikeACategory, DislikeACategory, GetAllLikedCategory
 
 urlpatterns = [
     path('create/', CreateUserView.as_view()),
@@ -14,8 +14,4 @@ urlpatterns = [
     path('like/<int:category_id>/', LikeACategory.as_view()),
     path('dislike/<int:category_id>/', DislikeACategory.as_view()),
     path('getlikes/', GetAllLikedCategory.as_view())
-]
-
-urlpatterns += [
-    path('goals/', GetUpdateUserGoals.as_view())
 ]

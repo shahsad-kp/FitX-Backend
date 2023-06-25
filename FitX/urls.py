@@ -24,6 +24,7 @@ urlpatterns = [
     path('category/', include('Category.urls')),
     path('exercise/', include('Exercises.urls')),
     path('banner/', include('Banner.urls')),
+    path('goals/', include('Goals.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 

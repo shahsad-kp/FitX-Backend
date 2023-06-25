@@ -12,9 +12,6 @@ class User(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_picture/', null=True)
     gender = models.CharField(choices=GENDERS, max_length=30, null=True)
     date_of_birth = models.DateField(verbose_name='Date of Birth', null=True)
-    weekly_calorie_goal = models.IntegerField(null=True)
-    weekly_category_goal = models.IntegerField(null=True)
-    weekly_exercise_goal = models.IntegerField(null=True)
     liked_categories = models.ManyToManyField(to='Category.Category', related_name='liked_by')
     first_name = None
     last_name = None
