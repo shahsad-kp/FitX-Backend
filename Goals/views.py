@@ -1,115 +1,77 @@
-from datetime import date, timedelta
+from datetime import timedelta, datetime
 
-from django.http import HttpRequest, HttpResponse
-from rest_framework import status
-from rest_framework.generics import ListAPIView
+import pytz
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 
 from Goals.models import WeeklyExerciseGoal, WeeklyCategoryGoal, WeeklyCalorieGoal
 from Goals.serializer import WeeklyCalorieGoalSerializer, WeeklyCategoryGoalSerializer, WeeklyExerciseGoalSerializer
 
 
-class WeeklyCalorieGoalViewSet(APIView):
+class WeeklyCalorieGoalCreateUpdateRetrieveAPIView(CreateAPIView, RetrieveAPIView):
+    serializer_class = WeeklyCalorieGoalSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        calorie = request.data.get('calorie_goal')
-        if not calorie:
-            return HttpResponse(
-                content="{'calorie_goal': 'This field may not be null.'}",
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
+    def get_object(self):
+        user = self.request.user
+        current_date = datetime.now(pytz.UTC).date()
+        last_sunday = current_date - timedelta(days=current_date.weekday() + 1)
+        try:
+            return WeeklyCalorieGoal.objects.get(user=user, week=last_sunday)
+        except WeeklyCalorieGoal.DoesNotExist:
+            return None
 
-        serializer = WeeklyCalorieGoalSerializer(data={
-            'user': request.user.pk,
-            'last_date': next_sunday,
-            'calorie_goal': calorie
-        })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return HttpResponse(status=201)
-
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
-
-        goal = request.user.weekly_calorie_goals.filter(last_date=next_sunday).first()
-        if goal is None:
-            return HttpResponse(status=404)
-        return HttpResponse(goal.calorie_goal)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        if self.request.method == 'GET':
+            context['goal'] = None
+        else:
+            context['goal'] = self.request.data.get('goal')
+        return context
 
 
-class WeeklyCategoryGoalViewSet(APIView):
+class WeeklyCategoryGoalCreateUpdateRetrieveAPIView(CreateAPIView, RetrieveAPIView):
+    serializer_class = WeeklyCategoryGoalSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        category = request.data.get('category_goal')
-        if not category:
-            return HttpResponse(
-                content="{'category_goal': 'This field may not be null.'}",
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
+    def get_object(self):
+        user = self.request.user
+        current_date = datetime.now(pytz.UTC).date()
+        last_sunday = current_date - timedelta(days=current_date.weekday() + 1)
+        try:
+            return WeeklyCategoryGoal.objects.get(user=user, week=last_sunday)
+        except WeeklyCategoryGoal.DoesNotExist:
+            return None
 
-        serializer = WeeklyCategoryGoalSerializer(data={
-            'user': request.user.pk,
-            'last_date': next_sunday,
-            'category_goal': category
-        })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return HttpResponse(status=201)
-
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
-
-        goal = request.user.weekly_category_goals.filter(last_date=next_sunday).first()
-        if goal is None:
-            return HttpResponse(status=404)
-        return HttpResponse(goal.category_goal)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        if self.request.method == 'GET':
+            context['goal'] = None
+        else:
+            context['goal'] = self.request.data.get('goal')
+        return context
 
 
-class WeeklyExerciseGoalViewSet(APIView):
+class WeeklyExerciseGoalCreateUpdateRetrieveAPIView(CreateAPIView, RetrieveAPIView):
+    serializer_class = WeeklyExerciseGoalSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        exercise = request.data.get('exercise_goal')
-        if not exercise:
-            return HttpResponse(
-                content="{'exercise_goal': 'This field may not be null.'}",
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
+    def get_object(self):
+        user = self.request.user
+        current_date = datetime.now(pytz.UTC).date()
+        last_sunday = current_date - timedelta(days=current_date.weekday() + 1)
+        try:
+            return WeeklyExerciseGoal.objects.get(user=user, week=last_sunday)
+        except WeeklyExerciseGoal.DoesNotExist:
+            return None
 
-        serializer = WeeklyExerciseGoalSerializer(data={
-            'user': request.user.pk,
-            'last_date': next_sunday,
-            'exercise_goal': exercise
-        })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return HttpResponse(status=201)
-
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        today = date.today()
-        days_ahead = (6 - today.weekday() + 7) % 7
-        next_sunday = today + timedelta(days=days_ahead)
-
-        goal = request.user.weekly_exercise_goals.filter(last_date=next_sunday).first()
-        if goal is None:
-            return HttpResponse(status=404)
-        return HttpResponse(goal.exercise_goal)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        if self.request.method == 'GET':
+            context['goal'] = None
+        else:
+            context['goal'] = self.request.data.get('goal')
+        return context
 
 
 class GetAllExerciseGoals(ListAPIView):
