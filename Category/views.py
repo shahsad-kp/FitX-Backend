@@ -110,10 +110,9 @@ class RemoveExerciseFromCategory(APIView):
 
 class GetCategoryLikes(ListAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     queryset = User.objects.all()
 
-    # create queryset with users who liked the category
     def get_queryset(self):
         category_id = self.kwargs.get('category_id')
         try:
