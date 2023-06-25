@@ -6,6 +6,7 @@ from Category.models import Category
 
 class CategorySerializer(ModelSerializer):
     exercises_count = SerializerMethodField()
+    likes = SerializerMethodField()
 
     class Meta:
         model = Category
