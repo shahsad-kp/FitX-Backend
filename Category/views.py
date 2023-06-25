@@ -1,6 +1,7 @@
 from rest_framework import status
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,6 +9,8 @@ from rest_framework.views import APIView
 from Category.models import Category
 from Category.serializers import CategorySerializer
 from Exercises.models import Exercise
+from Users.models import User
+from Users.serializers import UserSerializer
 
 
 class GetAllCategoriesView(ListAPIView):
@@ -103,3 +106,18 @@ class RemoveExerciseFromCategory(APIView):
 
         category.exercises.remove(exercise)
         return Response({'detail': 'Exercise removed from the category.'})
+
+
+class GetCategoryLikes(ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+
+    # create queryset with users who liked the category
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Category.objects.none()
+        return category.liked_by.all()
