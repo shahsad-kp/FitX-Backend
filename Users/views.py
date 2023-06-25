@@ -1,5 +1,8 @@
+from datetime import date
+
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, \
+    ListCreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -8,8 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from Category.models import Category
 from Category.serializers import CategorySerializer
-from Users.models import User
-from Users.serializers import UserSerializer
+from Users.models import User, Weight
+from Users.serializers import UserSerializer, WeightSerializer
 
 
 class CreateUserView(CreateAPIView):
@@ -147,3 +150,27 @@ class GetAllLikedCategory(ListAPIView):
     def get_queryset(self):
         queryset = Category.objects.filter(liked_by=self.request.user)
         return queryset
+
+
+class WeightListCreateAPIView(ListCreateAPIView):
+    serializer_class = WeightSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.weights.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class HeightListCreateAPIView(ListCreateAPIView):
+    serializer_class = WeightSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.heights.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

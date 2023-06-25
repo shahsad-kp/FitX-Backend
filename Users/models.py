@@ -26,13 +26,13 @@ class BurnedCalorie(models.Model):
 class Weight(models.Model):
     date = models.DateField()
     weight = models.FloatField()
-    user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='weights')
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='weights')
 
 
 class Height(models.Model):
     date = models.DateField()
     height = models.FloatField()
-    user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='heights')
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='heights')
 
 
 class CompletedCategory(models.Model):
@@ -41,4 +41,4 @@ class CompletedCategory(models.Model):
         to='Category.Category',
         on_delete=models.CASCADE,
     )
-    user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='completed_categories')
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='completed_categories')

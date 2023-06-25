@@ -42,3 +42,29 @@ class UserSerializer(ModelSerializer):
             user_data=user
         )
         return user
+
+
+class WeightSerializer(ModelSerializer):
+    class Meta:
+        model = Weight
+        fields = ['date', 'weight']
+        read_only_fields = ['user', 'date']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        weight = validated_data['weight']
+        date = datetime.date.today()
+        return Weight.objects.create(user=user, weight=weight, date=date)
+
+
+class HeightSerializer(ModelSerializer):
+    class Meta:
+        model = Height
+        fields = ['date', 'height']
+        read_only_fields = ['user', 'date']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        height = validated_data['height']
+        date = datetime.date.today()
+        return Height.objects.create(user=user, height=height, date=date)
