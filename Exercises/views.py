@@ -3,9 +3,9 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIVie
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
-from Category.models import Category
-from Exercises.models import Exercise
-from Exercises.serializers import ExerciseSerializer
+from Category.models import Category, CompletedCategory
+from Exercises.models import Exercise, CompletedExercise
+from Exercises.serializers import ExerciseSerializer, CompletedExerciseSerializer
 
 
 class CreateExercise(CreateAPIView):
@@ -73,4 +73,49 @@ class GetCategoryExercise(ListAPIView):
             queryset = self.queryset.filter(category=category)
         else:
             queryset = self.queryset.none()
+        return queryset
+
+
+class CompleteExercise(CreateAPIView, ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = CompletedExercise.objects.all()
+    serializer_class = CompletedExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        exercise_id = request.data.get('exercise_id')
+        category_id = request.data.get('category_id')
+        exercise = Exercise.objects.filter(id=exercise_id).first()
+        category = Category.objects.filter(id=category_id).first()
+        if not (exercise and category):
+            return Response(
+                {"detail": "Exercise or category not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        if CompletedExercise.objects.filter(user=request.user, exercise=exercise, category=category).exists():
+            return Response(
+                {"detail": "Exercise already completed."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        completed_exercise = CompletedExercise.objects.create(
+            user=request.user,
+            exercise=exercise,
+            category=category
+        )
+        for exercise in category.exercises:
+            if not CompletedExercise.objects.filter(user=request.user, exercise=exercise, category=category).exists():
+                return Response(
+                    {"detail": "Exercise completed."},
+                )
+        completed_exercise.delete()
+        CompletedCategory.objects.create(
+            user=request.user,
+            category=category
+        )
+        return Response(
+            {"detail": "Category completed."},
+        )
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = self.queryset.filter(user=user)
         return queryset

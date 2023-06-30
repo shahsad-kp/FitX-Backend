@@ -34,11 +34,3 @@ class Height(models.Model):
     height = models.FloatField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='heights')
 
-
-class CompletedCategory(models.Model):
-    date = models.DateField()
-    category_id = models.ForeignKey(
-        to='Category.Category',
-        on_delete=models.CASCADE,
-    )
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='completed_categories')
