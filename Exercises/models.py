@@ -13,3 +13,16 @@ class Exercise(models.Model):
     burn_calorie = models.IntegerField()
     focused_area = models.CharField(null=True, max_length=250)
     category = models.ManyToManyField(to=Category, related_name='exercises')
+
+    def __str__(self):
+        return self.name
+
+
+class CompletedExercise(models.Model):
+    exercise = models.ForeignKey(to=Exercise, on_delete=models.CASCADE, related_name='completed_exercises')
+    category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='completed_exercises')
+    user = models.ForeignKey(to='Users.User', on_delete=models.CASCADE, related_name='completed_exercises')
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.exercise.name
