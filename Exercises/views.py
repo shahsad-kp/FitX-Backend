@@ -82,8 +82,23 @@ class CompleteExercise(CreateAPIView, ListAPIView):
     serializer_class = CompletedExerciseSerializer
 
     def post(self, request, *args, **kwargs):
+        data = request.POST
         exercise_id = request.data.get('exercise_id')
         category_id = request.data.get('category_id')
+        if exercise_id.isdigit():
+            exercise_id = int(exercise_id)
+        else:
+            return Response(
+                {"detail": "Exercise ID must be an integer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if category_id.isdigit():
+            category_id = int(category_id)
+        else:
+            return Response(
+                {"detail": "Category ID must be an integer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         exercise = Exercise.objects.filter(id=exercise_id).first()
         category = Category.objects.filter(id=category_id).first()
         if not (exercise and category):
@@ -101,12 +116,12 @@ class CompleteExercise(CreateAPIView, ListAPIView):
             exercise=exercise,
             category=category
         )
-        for exercise in category.exercises:
+        for exercise in category.exercises.all():
             if not CompletedExercise.objects.filter(user=request.user, exercise=exercise, category=category).exists():
                 return Response(
                     {"detail": "Exercise completed."},
                 )
-        completed_exercise.delete()
+        CompletedExercise.objects.filter(user=request.user, category=category).delete()
         CompletedCategory.objects.create(
             user=request.user,
             category=category
