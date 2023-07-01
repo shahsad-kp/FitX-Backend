@@ -1,7 +1,7 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from Category.models import Category
+from Category.models import Category, CompletedCategory
 
 
 class CategorySerializer(ModelSerializer):
@@ -17,3 +17,9 @@ class CategorySerializer(ModelSerializer):
 
     def get_likes(self, instance):
         return instance.likes.count()
+
+
+class CompletedCategorySerializer(ModelSerializer):
+    class Meta:
+        model = CompletedCategory
+        fields = ('id', 'category_id', 'date')

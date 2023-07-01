@@ -1,13 +1,13 @@
 from rest_framework import status
-from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
+    ListCreateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from Category.models import Category
-from Category.serializers import CategorySerializer
+from Category.serializers import CategorySerializer, CompletedCategorySerializer
 from Exercises.models import Exercise
 from Users.models import User
 from Users.serializers import UserSerializer
@@ -120,3 +120,11 @@ class GetCategoryLikes(ListAPIView):
         except Category.DoesNotExist:
             return Category.objects.none()
         return category.liked_by.all()
+
+
+class CompletedCategoryView(ListCreateAPIView):
+    serializer_class = CompletedCategorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Category.objects.filter(completed_categories__user=self.request.user)
