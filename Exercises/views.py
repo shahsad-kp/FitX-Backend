@@ -110,7 +110,7 @@ class CompleteExercise(ListAPIView, CreateAPIView):
                 {"detail": "Exercise already completed."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        completed_exercise = CompletedExercise.objects.create(
+        CompletedExercise.objects.create(
             user=request.user,
             exercise=exercise,
             category=category

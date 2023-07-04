@@ -13,4 +13,4 @@ class ExerciseSerializer(ModelSerializer):
 class CompletedExerciseSerializer(ModelSerializer):
     class Meta:
         model = CompletedExercise
-        fields = ('id', 'exercise_id', 'category_id')
+        fields = ('id', 'exercise_id', 'category_id', 'date')
