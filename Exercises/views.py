@@ -120,10 +120,14 @@ class CompleteExercise(ListAPIView, CreateAPIView):
                 return Response(
                     {"detail": "Exercise completed."},
                 )
-        CompletedExercise.objects.filter(user=request.user, category=category).delete()
+
+        for exercise in category.exercises.all():
+            CompletedExercise.objects.filter(user=request.user, exercise=exercise, category=category).order_by('-date')\
+                .first().delete()
+
         CompletedCategory.objects.create(
             user=request.user,
-            category=category
+            category=category,
         )
         return Response(
             {"detail": "Category completed."},
