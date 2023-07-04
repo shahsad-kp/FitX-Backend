@@ -148,7 +148,7 @@ class GetAllLikedCategory(ListAPIView):
     queryset = Category.objects.all()
 
     def get_queryset(self):
-        queryset = Category.objects.filter(liked_by=self.request.user)
+        queryset = Category.objects.filter(likes=self.request.user)
         return queryset
 
 
