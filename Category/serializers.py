@@ -20,6 +20,8 @@ class CategorySerializer(ModelSerializer):
 
 
 class CompletedCategorySerializer(ModelSerializer):
+    category = CategorySerializer(read_only=True, many=False)
+
     class Meta:
         model = CompletedCategory
-        fields = ('id', 'category_id', 'date')
+        fields = ('id', 'category', 'date')

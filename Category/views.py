@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Category.models import Category
+from Category.models import Category, CompletedCategory
 from Category.serializers import CategorySerializer, CompletedCategorySerializer
 from Exercises.models import Exercise
 from Users.models import User
@@ -127,4 +127,4 @@ class CompletedCategoryView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Category.objects.filter(completed_categories__user=self.request.user)
+        return CompletedCategory.objects.filter(user=self.request.user)
