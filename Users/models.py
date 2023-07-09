@@ -13,6 +13,7 @@ class User(AbstractUser):
     gender = models.CharField(choices=GENDERS, max_length=30, null=True)
     date_of_birth = models.DateField(verbose_name='Date of Birth', null=True)
     liked_categories = models.ManyToManyField(to='Category.Category', related_name='likes')
+    is_trainer = models.BooleanField(default=False)
     first_name = None
     last_name = None
 

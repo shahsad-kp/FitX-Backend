@@ -17,6 +17,7 @@ class UserSerializer(ModelSerializer):
             'email',
             'gender',
             'password',
+            'is_trainer',
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
