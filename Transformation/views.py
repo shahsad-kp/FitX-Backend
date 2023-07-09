@@ -23,7 +23,7 @@ class DeleteTransformationImageView(DestroyAPIView):
     lookup_field = 'id'
 
     def get_object(self):
-        transformation_image = TransformationImage.objects.get(id=self.kwargs['id'])
+        transformation_image = super().get_object()
         if transformation_image.user != self.request.user:
             raise PermissionError('You are not allowed to delete this object')
         return transformation_image
