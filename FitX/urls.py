@@ -23,7 +23,7 @@ urlpatterns = [
     path('users/', include('Users.urls')),
     path('category/', include('Category.urls')),
     path('exercise/', include('Exercises.urls')),
-    path('banner/', include('Banner.urls')),
+    path('transformation/', include('Transformation.urls')),
     path('goals/', include('Goals.urls')),
     path('trainer/', include('Trainer.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

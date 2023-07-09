@@ -5,7 +5,6 @@ from rest_framework.response import Response
 
 from Trainer.models import TrainerData
 from Trainer.serializers import TrainerSerializer, CertificateSerializer, TrainerListSerializer
-from Users.models import User
 
 
 class ApplyForTrainerView(CreateAPIView):

@@ -12,7 +12,7 @@ SECRET_KEY = 'django-insecure-m13s7h=2hqi*u7+lmbmdrf4=%s%(1k&##1c4zjtjwp#7t!=%vz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2','127.0.0.1', "*"]
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', "*"]
 
 # Application definition
 
@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Users',
     'Exercises',
-    'Banner',
+    'Transformation',
     'Category',
     'rest_framework',
     'rest_framework_simplejwt',
