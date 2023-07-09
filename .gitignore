@@ -184,8 +184,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-/category_audios/
-/category_images/
-/exercise_demos/
+/media/category_audios/
+/media/category_images/
+/media/exercise_demos/
 /utilities/
 /profile_picture/
