@@ -14,7 +14,7 @@ class TrainerData(models.Model):
 class Certificate(models.Model):
     title = models.CharField(max_length=120, null=True)
     description = models.TextField(null=True)
-    image = models.ImageField(upload_to='certificates/')
+    file = models.FileField(upload_to='certificates/')
 
     def __str__(self):
         return f"Certificate {self.title}"

@@ -7,7 +7,7 @@ from Users.serializers import UserSerializer
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificate
-        fields = ['id', 'title', 'description', 'image']
+        fields = ['id', 'title', 'description', 'file']
 
 
 class TrainerSerializer(serializers.ModelSerializer):
