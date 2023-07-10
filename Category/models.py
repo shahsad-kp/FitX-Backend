@@ -8,7 +8,7 @@ class Category(models.Model):
     music = models.FileField(upload_to='category_audios/')
 
     def __str__(self):
-        return self.name
+        return f"Category {self.name}"
 
 
 class CompletedCategory(models.Model):
@@ -17,4 +17,4 @@ class CompletedCategory(models.Model):
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.category.name
+        return f"{self.user} completed {self.category} on {self.date}"

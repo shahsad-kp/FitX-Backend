@@ -15,7 +15,7 @@ class Exercise(models.Model):
     category = models.ManyToManyField(to=Category, related_name='exercises')
 
     def __str__(self):
-        return self.name
+        return f"Exercise {self.name}"
 
 
 class CompletedExercise(models.Model):
@@ -25,4 +25,4 @@ class CompletedExercise(models.Model):
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.exercise.name
+        return f"{self.user} completed {self.exercise} of {self.category} on {self.date}"

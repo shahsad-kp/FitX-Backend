@@ -7,7 +7,7 @@ class WeeklyCalorieGoal(models.Model):
     goal = models.IntegerField()
 
     def __str__(self):
-        return f'{self.user} - {self.week}'
+        return f'Calorie goal for {self.user} in {self.week} week'
 
     class Meta:
         ordering = ['-week']
@@ -19,7 +19,7 @@ class WeeklyCategoryGoal(models.Model):
     goal = models.IntegerField()
 
     def __str__(self):
-        return f'{self.user} - {self.week}'
+        return f'Category goal for {self.user} in {self.week} week'
 
     class Meta:
         ordering = ['-week']
@@ -31,7 +31,7 @@ class WeeklyExerciseGoal(models.Model):
     goal = models.IntegerField()
 
     def __str__(self):
-        return f'{self.user} - {self.week}'
+        return f'Exercise goal for {self.user} in {self.week} week'
 
     class Meta:
         ordering = ['-week']

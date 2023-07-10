@@ -17,11 +17,17 @@ class User(AbstractUser):
     first_name = None
     last_name = None
 
+    def __str__(self):
+        return f'@{self.username}'
+
 
 class BurnedCalorie(models.Model):
     date = models.DateField(auto_now=True)
     calories = models.IntegerField()
     user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='burned_calories')
+
+    def __str__(self):
+        return f'{self.user_data} burned {self.calories} calories at {self.date}'
 
 
 class Weight(models.Model):
@@ -29,9 +35,15 @@ class Weight(models.Model):
     weight = models.FloatField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='weights')
 
+    def __str__(self):
+        return f'{self.user} weight is {self.weight} at {self.date}'
+
 
 class Height(models.Model):
     date = models.DateField(auto_now=True)
     height = models.FloatField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='heights')
+
+    def __str__(self):
+        return f'{self.user} height is {self.height} at {self.date}'
 
