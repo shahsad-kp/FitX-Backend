@@ -1,5 +1,3 @@
-import datetime
-
 from rest_framework.serializers import ModelSerializer
 
 from Users.models import User, Height, Weight
@@ -41,8 +39,7 @@ class WeightSerializer(ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         weight = validated_data['weight']
-        date = datetime.date.today()
-        return Weight.objects.create(user=user, weight=weight, date=date)
+        return Weight.objects.create(user=user, weight=weight)
 
 
 class HeightSerializer(ModelSerializer):
@@ -54,5 +51,4 @@ class HeightSerializer(ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         height = validated_data['height']
-        date = datetime.date.today()
-        return Height.objects.create(user=user, height=height, date=date)
+        return Height.objects.create(user=user, height=height)

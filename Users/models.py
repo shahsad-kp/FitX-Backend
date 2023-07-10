@@ -19,19 +19,19 @@ class User(AbstractUser):
 
 
 class BurnedCalorie(models.Model):
-    date = models.DateField()
+    date = models.DateField(auto_now=True)
     calories = models.IntegerField()
     user_data = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='burned_calories')
 
 
 class Weight(models.Model):
-    date = models.DateField()
+    date = models.DateField(auto_now=True)
     weight = models.FloatField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='weights')
 
 
 class Height(models.Model):
-    date = models.DateField()
+    date = models.DateField(auto_now=True)
     height = models.FloatField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='heights')
 
