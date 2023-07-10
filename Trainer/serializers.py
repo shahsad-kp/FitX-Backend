@@ -12,12 +12,18 @@ class CertificateSerializer(serializers.ModelSerializer):
 
 class TrainerSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(max_length=120)
-    certificates = CertificateSerializer(many=True)
+    certificates = CertificateSerializer(many=True, read_only=True)
     experience = serializers.DurationField()
+    certificate_ids = serializers.PrimaryKeyRelatedField(
+        source='certificates',
+        many=True,
+        write_only=True,
+        queryset=Certificate.objects.all()
+    )
 
     class Meta:
         model = TrainerData
-        fields = ['id', 'phone', 'certificates', 'experience']
+        fields = ['id', 'phone', 'certificates', 'certificate_ids', 'experience']
 
     def create(self, validated_data):
         request = self.context.get('request')
