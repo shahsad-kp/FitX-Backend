@@ -17,6 +17,8 @@ ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', "*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     'UserAuth',
     'Goals',
     'Trainer',
+    'Messages',
     'drf_yasg',
 ]
 
@@ -72,7 +75,14 @@ REST_FRAMEWORK = {
     )
 }
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 WSGI_APPLICATION = 'FitX.wsgi.application'
+ASGI_APPLICATION = 'FitX.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -10,3 +10,5 @@ djangorestframework~=3.14.0
 drf-yasg
 djangorestframework-simplejwt
 pytz~=2023.3
+channels==4.0.0
+daphne==4.0.0
