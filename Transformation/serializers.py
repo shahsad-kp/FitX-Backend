@@ -6,7 +6,7 @@ from Transformation.models import TransformationImage
 class TransformationImageSerializer(ModelSerializer):
     class Meta:
         model = TransformationImage
-        fields = ('id', 'image', 'date')
+        fields = ('id', 'image', 'datetime')
 
     def create(self, validated_data):
         request = self.context.get('request')
