@@ -21,6 +21,8 @@ class DeleteTransformationImageView(DestroyAPIView):
     serializer_class = TransformationImageSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
+    queryset = TransformationImage.objects.all()
+
 
     def get_object(self):
         transformation_image = super().get_object()
