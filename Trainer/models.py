@@ -17,4 +17,4 @@ class Certificate(models.Model):
     file = models.FileField(upload_to='certificates/')
 
     def __str__(self):
-        return f"Certificate {self.title}"
+        return f"Certificate {self.title}, Id: {self.id}"
