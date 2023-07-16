@@ -40,9 +40,9 @@ class AllMessagedUsersView(ListAPIView):
     def get_queryset(self):
         return User.objects.filter(
             Q(
-                sender_messages__receiver_id=self.request.user.id
+                sended_messages__receiver_id=self.request.user.id
             ) |
             Q(
-                receiver_messages__sender_id=self.request.user.id
+                received_messages__sender_id=self.request.user.id
             )
         ).distinct()
