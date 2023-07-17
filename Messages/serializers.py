@@ -9,7 +9,7 @@ class MessageSerializer(serializers.ModelSerializer):
     receiver = UserSerializer(read_only=True)
     sender_id = serializers.IntegerField(write_only=True)
     receiver_id = serializers.IntegerField(write_only=True)
-    media_id = serializers.IntegerField(write_only=True)
+    media_id = serializers.IntegerField(write_only=True, required=False)
     media = serializers.FileField(source='media.media', read_only=True)
 
     class Meta:
