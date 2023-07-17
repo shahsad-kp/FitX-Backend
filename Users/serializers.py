@@ -16,12 +16,12 @@ class UserSerializer(ModelSerializer):
             'gender',
             'password',
             'is_trainer',
+            'is_premium'
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-
         user = User(  # Assign the newly created UserData instance to the user_data field
             **validated_data
         )

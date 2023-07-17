@@ -174,3 +174,18 @@ class HeightListCreateAPIView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class MakePremium(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self):
+        user = self.request.user
+        user.is_premium = True
+        user.save()
+        return Response(
+            {
+                'detail': 'User is now premium'
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
