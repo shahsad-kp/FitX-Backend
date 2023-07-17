@@ -53,7 +53,7 @@ class RespondToTrainerApplicationView(GenericAPIView):
 
 
 class TrainerListView(ListAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = TrainerListSerializer
 
     def get_queryset(self):
