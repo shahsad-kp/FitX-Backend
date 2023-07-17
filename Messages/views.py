@@ -1,10 +1,10 @@
 from django.db.models import Q
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.pagination import CursorPagination
 from rest_framework.permissions import IsAuthenticated
 
 from Messages.models import Message
-from Messages.serializers import MessageSerializer
+from Messages.serializers import MessageSerializer, MessageMediaSerializer
 from Users.serializers import UserSerializer
 from Users.models import User
 
@@ -46,3 +46,8 @@ class AllMessagedUsersView(ListAPIView):
                 received_messages__sender_id=self.request.user.id
             )
         ).distinct()
+
+
+class UploadMessageImage(CreateAPIView):
+    serializer_class = MessageMediaSerializer
+    permission_classes = [IsAuthenticated]
