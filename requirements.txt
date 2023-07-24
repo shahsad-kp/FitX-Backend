@@ -12,3 +12,4 @@ djangorestframework-simplejwt
 pytz~=2023.3
 channels==4.0.0
 daphne==4.0.0
+django-environ==0.10.0
